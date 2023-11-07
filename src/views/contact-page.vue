@@ -2,7 +2,6 @@
   <div class="container is-fluid">
     <form v-if="!sentMessage" class="is-centered" @submit.prevent="submitForm">
       <h1 class="is-size-3">Have a question or comment?</h1>
-      <br >
       <p class="is-size-5">Reach out and we'll get back to you soon.</p>
       <br >
       <br >

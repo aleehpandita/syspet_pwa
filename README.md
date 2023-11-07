@@ -1,5 +1,5 @@
 
-# Peridot
+# SysPet using Peridot boilerplate
 A fully featured Vue 2.6 PWA boilerplate
 ![Screenshot](./docs/readme_resources/homepage.png)
 

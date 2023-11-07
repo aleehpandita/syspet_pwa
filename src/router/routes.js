@@ -19,7 +19,7 @@ const routes = [
     name: "account",
     component: () => lazyLoadView(import("@/views/account-page")),
     meta: {
-      requiresAuth: true,
+      //requiresAuth: true,
     },
   },
   {
@@ -43,7 +43,7 @@ const routes = [
     name: "accounts",
     component: () => lazyLoadView(import("@/views/accounts-page")),
     meta: {
-      requiresAuth: true,
+      //requiresAuth: true,
     },
   },
   {
@@ -78,6 +78,14 @@ const routes = [
   {
     path: "*",
     redirect: "404",
+  },
+  {
+    path: "/add-pet",
+    name: "addPet",
+    component: () => lazyLoadView(import("@/views/add-pet")),
+    meta: {
+      //requiresAuth: true,
+    },
   },
 ]
 

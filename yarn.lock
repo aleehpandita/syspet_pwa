@@ -9675,6 +9675,11 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-picture-input@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/vue-picture-input/-/vue-picture-input-3.0.1.tgz#52b8a1646adee108d425ac2ae8940bac14bfc9cc"
+  integrity sha512-VGzqoH4iAN/S7L9RY2DyyLs4AjLt4QoWx6asT3y3PTXK2yFTXbUjx5qYdHrUJrVpInhvQwngEO/mJ7LhGXGFFg==
+
 vue-router@^3.4.9:
   version "3.4.9"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.4.9.tgz#c016f42030ae2932f14e4748b39a1d9a0e250e66"
