@@ -87,6 +87,14 @@ const routes = [
       //requiresAuth: true,
     },
   },
+  {
+    path: "/pets",
+    name: "pets",
+    component: () => lazyLoadView(import("@/views/pets-page")),
+    meta: {
+      //requiresAuth: true,
+    },
+  },
 ]
 
 // Lazy-loads view components, but with better UX. A loading view

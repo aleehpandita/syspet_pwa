@@ -25,18 +25,23 @@
       class="navbar-menu"
     >
       <div class="navbar-start">
-        <router-link v-if="isAdmin" to="/accounts" class="navbar-item"
-        >Accounts</router-link
-        >
+        <router-link v-if="isAdmin" to="/accounts" class="navbar-item">
+          Accounts
+        </router-link>
       </div>
-
+      <div class="navbar-start">
+        <router-link to="/add-pet" class="navbar-item">Add Pet</router-link>
+      </div>
+      <div class="navbar-start">
+        <router-link to="/pets" class="navbar-item">Pets</router-link>
+      </div>
       <div class="navbar-end">
-        <span v-if="!isLoggedIn" class="navbar-item">
+        <!-- <span v-if="!isLoggedIn" class="navbar-item">
           <a class="navbar-item button accNav is-info" @click="openSignup()">
             Sign Up</a
           >
           <a class="navbar-item button accNav" @click="openLogin()">Log In</a>
-        </span>
+        </span> -->
 
         <div v-if="isLoggedIn" class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link is-active"> Account </a>

@@ -4,6 +4,7 @@ import pathify from "@/store/pathify"
 import createPersistedState from "vuex-persistedstate"
 
 import account from "@/store/account"
+import pet from "@/store/pet"
 import ui from "@/store/ui"
 
 Vue.use(Vuex)
@@ -14,6 +15,7 @@ const persistData = true
 const store = {
   modules: {
     account: { ...account },
+    pet: { ...pet },
     ui: { ...ui },
   },
 }
