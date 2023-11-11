@@ -7,74 +7,28 @@
     />
 
     <div class="container">
-      <p v-if="!isEmpty">Number of pets: {{ this.items.length }}</p>
-      <b-table :data="items" :columns="columns" />
+      <!-- <p v-if="!isEmpty">Number of pets: {{ this.items.length }}</p> -->
+      <!-- <b-table :data="items" :columns="columns" /> -->
       <!-- <p v-if="!isEmpty">Number of pets: {{ this.items }}</p> -->
-      <!-- <b-table
-        :data="items"
-        :bordered="isBordered"
-        :striped="isStriped"
-        :narrowed="isNarrowed"
-        :checkable="isCheckable"
-        :loading="isLoading"
-        :mobile-cards="hasMobileCards"
-        :paginated="isPaginated"
-        :per-page="perPage"
-        :pagination-simple="isPaginationSimple"
-        :detailed="isDetailed"
-        :checked-rows.sync="checkedRows"
-      >
-        <template slot-scope="props">
-          <b-table-column field="id" label="ID" width="40" sortable numeric>
-            {{ props.id }}
-          </b-table-column>
-
-          <b-table-column field="name" label="Name" sortable>
-            {{ props.name }}
-          </b-table-column>
-
-          <b-table-column field="age" label="Age" sortable>
-            {{ props.age }}
-          </b-table-column>
-
-          <b-table-column field="breed" label="Breed" sortable>
-            {{ props.breed }}
-          </b-table-column>
-
-          <b-table-column
-            field="modifiedTime"
-            label="Modified Date"
-            sortable
-            centered
+      <template>
+        <div>
+          <button
+            class="button is-small is-info is-outlined"
+            @click="openEditModal()"
           >
-            <span class="tag is-info">
-              {{ props.modifiedTime | localDate }}
-            </span>
-          </b-table-column>
-
-          <b-table-column
-            field="createdTime"
-            label="Created Date"
-            sortable
-            centered
-          >
-            <span class="tag is-info">
-              {{ props.createdTime | localDate }}
-            </span>
-          </b-table-column>
-
-          <b-table-column>
-            <button
-              class="button is-small is-info is-outlined"
-              @click="openEditModal(props.row)"
-            >
-              Edit
-            </button>
-          </b-table-column>
-        </template>
-
-        <div slot="empty" class="has-text-centered">Loading Accounts</div>
-      </b-table> -->
+            Edit
+          </button>
+          <b-table
+            :data="formattedTableData"
+            :columns="columns"
+            :mobile-cards="true"
+            striped
+            bordered
+            narrowed
+            hoverable
+          />
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -86,12 +40,43 @@ export default {
   mixins: [],
   data() {
     return {
+      items: [
+        {
+          id: 1,
+          avatar:
+            "https://robohash.org/2c4b0b21545a063589ab6024994bef98?set=set4&bgset=&size=400x400",
+          age: 40,
+          name: "Dickerson",
+          birth_date: "2020-12-30",
+          breed: "Perro",
+          owner_id: 2,
+          owner_name: "Ale",
+          createdTime: "2022-10-10",
+          modifiedTime: "2022-10-10",
+        },
+        {
+          id: 2,
+          avatar:
+            "https://robohash.org/2c4b0b21545a063589ab6024994bef98?set=set4&bgset=&size=400x400",
+          age: 40,
+          name: "Dickerson",
+          birth_date: "2020-12-30",
+          breed: "Perro",
+          owner_id: 2,
+          owner_name: "Ale",
+          createdTime: "2022-10-10",
+          modifiedTime: "2022-10-10",
+        },
+      ],
+
       columns: [
         {
           field: "id",
           label: "ID",
-          width: "40",
-          numeric: true,
+        },
+        {
+          field: "avatar",
+          label: "avatar",
         },
         {
           field: "age",
@@ -118,29 +103,9 @@ export default {
           field: "modifiedTime",
           label: "modifiedTime",
         },
-      ],
-      items: [
         {
-          id: 1,
-          age: 40,
-          name: "Dickerson",
-          birth_date: "2020-12-30",
-          breed: "Perro",
-          owner_id: 2,
-          owner_name: "Ale",
-          createdTime: "2022-10-10",
-          modifiedTime: "2022-10-10",
-        },
-        {
-          id: 2,
-          age: 40,
-          name: "Dickerson",
-          birth_date: "2020-12-30",
-          breed: "Perro",
-          owner_id: 2,
-          owner_name: "Ale",
-          createdTime: "2022-10-10",
-          modifiedTime: "2022-10-10",
+          field: "edit",
+          label: "Edit",
         },
       ],
       accounts: [
@@ -175,8 +140,23 @@ export default {
     this.updateLocalData()
   },
   mounted() {},
-  computed: {},
+  computed: {
+    formattedTableData() {
+      return this.items.map((item) => ({
+        ...item,
+        avatar: `<img src="${item.avatar}" alt="Avatar" class="avatar-img"/>`,
+        edit: `<b-button class="button is-small is-info is-outlined"
+              @click.stop="openSignup()""
+            >
+              Edit
+            </b-button>`,
+      }))
+    },
+  },
   methods: {
+    openSignup() {
+      this.modalComp = () => import("@/components/signup-form")
+    },
     openEditModal(userData) {
       this.selectedUser = userData
       this.modalComp = () => import("@/components/admin-edit-user")
@@ -234,5 +214,18 @@ export default {
 
 button {
   display: inline;
+}
+</style>
+<style>
+.avatar-cell {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 8px; /* Adjust the margin as needed */
 }
 </style>

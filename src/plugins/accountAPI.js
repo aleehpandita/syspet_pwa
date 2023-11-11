@@ -3,7 +3,7 @@ import store from "@/store/index"
 
 const HTTP = () => {
   return axios.create({
-    baseURL: "http://0.0.0.0:8000",
+    baseURL: "http://0.0.0.0:8000/v1/users/",
     headers: {
       Authorization: `Bearer ${store.get("account/token")}`,
     },
@@ -24,7 +24,7 @@ function updateStoreData(accInfo) {
   if (accInfo.lastName) {
     store.set("account/lastName", accInfo.lastName)
   }
-  if (accInfo.emailAddress) {
+  if (accInfo.emailzƒ) {
     store.set("account/emailAddress", accInfo.emailAddress)
   }
   if (accInfo.createdTime) {
