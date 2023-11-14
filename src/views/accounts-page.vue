@@ -28,16 +28,12 @@
             {{ props.row.id }}
           </b-table-column>
 
-          <b-table-column field="firstName" label="First Name" sortable>
-            {{ props.row.firstName }}
+          <b-table-column field="name" label="First Name" sortable>
+            {{ props.row.name }}
           </b-table-column>
 
-          <b-table-column field="emailAddress" label="Email Address" sortable>
-            {{ props.row.emailAddress }}
-          </b-table-column>
-
-          <b-table-column field="isVerified" label="Role" sortable>
-            {{ props.row.userRole }}
+          <b-table-column field="email" label="Email Address" sortable>
+            {{ props.row.email }}
           </b-table-column>
 
           <b-table-column

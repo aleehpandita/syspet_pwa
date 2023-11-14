@@ -4,16 +4,12 @@ const state = function () {
   return {
     isAuthenticated: false,
     id: null,
-    firstName: null,
-    lastName: null,
-    emailAddress: null,
+    name: null,
+    last_name: null,
+    email: null,
     token: null,
-    phoneNumber: null,
-    userRole: null,
-    UUID: null,
-    isVerified: null,
-    createdTime: null,
-    modifiedTime: null,
+    created_at: null,
+    updated_at: null,
   }
 }
 

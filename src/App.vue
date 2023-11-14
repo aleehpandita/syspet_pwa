@@ -10,6 +10,7 @@
 
 <script>
 import GlobalNavbar from "@/components/navbar-comp"
+import store from "@/store/index"
 
 export default {
   name: "App",
@@ -19,7 +20,9 @@ export default {
   },
   mixins: [],
   data() {
-    return {}
+    return {
+      isNavbarVisible: true,
+    }
   },
   beforeCreate() {},
   created() {},

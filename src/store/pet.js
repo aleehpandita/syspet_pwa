@@ -10,10 +10,8 @@ const state = function () {
     breed: null,
     owner_id: null,
     owner_name: null,
-    UUID: null,
-    isVerified: null,
-    createdTime: null,
-    modifiedTime: null,
+    register_date: null,
+    updated_at: null,
   }
 }
 

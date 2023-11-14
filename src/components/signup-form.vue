@@ -2,27 +2,26 @@
   <div>
     <h1 class="title has-text-centered">Sign Up</h1>
     <form id="signupform" @submit.prevent="signup">
-      <!-- <b-field label="First Name">
-              <FormulateInput
-                type="text"
-                name="firstName"
-                placeholder="Johnny"
-                v-model="firstName"
-              />
-            </b-field>
-      
-            <b-field label="Last Name">
-              <FormulateInput
+      <b-field label="First Name">
+        <FormulateInput
+          v-model="name"
           type="text"
-          name="lastName"
-          placeholder="Appleseed"
-          v-model="lastName"
+          name="name"
+          placeholder="Johnny"
         />
-      </b-field>-->
+      </b-field>
+      <b-field label="Last Name">
+        <FormulateInput
+          v-model="last_name"
+          type="text"
+          name="last_name"
+          placeholder="Appleseed"
+        />
+      </b-field>
 
       <b-field label="Email">
         <FormulateInput
-          v-model="emailAddress"
+          v-model="email"
           type="email"
           name="email"
           validation="required|email"
@@ -58,10 +57,10 @@ export default {
   mixins: [],
   data() {
     return {
-      emailAddress: null,
+      last_name: null,
       password: null,
-      firstName: null,
-      lastName: null,
+      name: null,
+      email: null,
       errors: [],
     }
   },
@@ -73,10 +72,10 @@ export default {
   methods: {
     signup() {
       const cleanData = this.$accountAPI.cleanData({
-        emailAddress: this.emailAddress,
         password: this.password,
-        firstName: this.firstName,
-        lastName: this.lastName,
+        email: this.email,
+        name: this.name,
+        last_name: this.last_name,
       })
 
       if (cleanData.errors.length >= 1) {
@@ -102,7 +101,8 @@ export default {
             this.$router.push("/")
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log(error)
           this.errors = [
             "An error occured. An email may aready exist with that address",
           ]

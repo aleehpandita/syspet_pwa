@@ -12,12 +12,6 @@
       <!-- <p v-if="!isEmpty">Number of pets: {{ this.items }}</p> -->
       <template>
         <div>
-          <button
-            class="button is-small is-info is-outlined"
-            @click="openEditModal()"
-          >
-            Edit
-          </button>
           <b-table
             :data="formattedTableData"
             :columns="columns"
@@ -26,6 +20,7 @@
             bordered
             narrowed
             hoverable
+            @click="openEditModal"
           />
         </div>
       </template>
@@ -36,47 +31,22 @@
 <script>
 export default {
   name: "Pets",
-  components: {},
   mixins: [],
   data() {
     return {
-      items: [
-        {
-          id: 1,
-          avatar:
-            "https://robohash.org/2c4b0b21545a063589ab6024994bef98?set=set4&bgset=&size=400x400",
-          age: 40,
-          name: "Dickerson",
-          birth_date: "2020-12-30",
-          breed: "Perro",
-          owner_id: 2,
-          owner_name: "Ale",
-          createdTime: "2022-10-10",
-          modifiedTime: "2022-10-10",
-        },
-        {
-          id: 2,
-          avatar:
-            "https://robohash.org/2c4b0b21545a063589ab6024994bef98?set=set4&bgset=&size=400x400",
-          age: 40,
-          name: "Dickerson",
-          birth_date: "2020-12-30",
-          breed: "Perro",
-          owner_id: 2,
-          owner_name: "Ale",
-          createdTime: "2022-10-10",
-          modifiedTime: "2022-10-10",
-        },
-      ],
-
+      items: [],
       columns: [
         {
           field: "id",
           label: "ID",
         },
+        // {
+        //   field: "avatar",
+        //   label: "avatar",
+        // },
         {
-          field: "avatar",
-          label: "avatar",
+          field: "name",
+          label: "name",
         },
         {
           field: "age",
@@ -94,28 +64,6 @@ export default {
         {
           field: "owner_name",
           label: "Owner Name",
-        },
-        {
-          field: "createdTime",
-          label: "createdTime",
-        },
-        {
-          field: "modifiedTime",
-          label: "modifiedTime",
-        },
-        {
-          field: "edit",
-          label: "Edit",
-        },
-      ],
-      accounts: [
-        {
-          id: 1,
-          firstName: "PErro",
-          emailAddress: "sasasa",
-          isVerified: "Admin",
-          modifiedTime: "2020-10-23",
-          createdTime: "2020-10-23",
         },
       ],
       checkedRows: [],
@@ -142,11 +90,15 @@ export default {
   mounted() {},
   computed: {
     formattedTableData() {
+      // Object.keys(fetchedData).forEach((key) => {
+      //   console.log(key, fetchedData[key])
+      //   this.items
+      // })
       return this.items.map((item) => ({
         ...item,
-        avatar: `<img src="${item.avatar}" alt="Avatar" class="avatar-img"/>`,
-        edit: `<b-button class="button is-small is-info is-outlined"
-              @click.stop="openSignup()""
+        //avatar: `<img src="${item.avatar}" alt="Avatar" class="avatar-img"/>`,
+        edit: `<b-button class="button is-small is-info is-outlined custom-button" data-id="${item.id}"
+              @click.stop="openEditModal(${item})"
             >
               Edit
             </b-button>`,
@@ -154,38 +106,40 @@ export default {
     },
   },
   methods: {
-    openSignup() {
-      this.modalComp = () => import("@/components/signup-form")
-    },
     openEditModal(userData) {
+      console.log("item:" + userData.id)
       this.selectedUser = userData
-      this.modalComp = () => import("@/components/admin-edit-user")
+      this.modalComp = () => import("@/components/admin-edit-pet")
     },
     closeModal(madeChanges) {
       this.selectedUser = {}
       this.modalComp = null
       if (madeChanges) {
-        //this.updateLocalData()
+        this.updateLocalData()
       }
     },
     updateLocalData() {
-      // this.$petAPI
-      //   .getAccounts()
-      //   .then((users) => {
-      //     this.isLoading = false
-      //     this.isEmpty = false
-      //     this.accounts = users
-      //     this.isPaginated = users.length > this.perPage ? true : false
-      //   })
-      //   .catch(() => {
-      //     this.isLoading = false
-      //     this.$buefy.snackbar.open({
-      //       duration: 2000,
-      //       message: "An error occured. Please try again",
-      //       position: "is-top",
-      //       type: "is-warning",
-      //     })
-      //   })
+      this.$petAPI
+        .getPets()
+        .then((fetchedData) => {
+          // Object.keys(fetchedData).forEach((key) => {
+          //   console.log(key, fetchedData[key])
+          // })
+          this.items = fetchedData["pets"]
+          console.log(this.items)
+          this.isLoading = false
+          this.isEmpty = false
+          this.isPaginated = this.items.length > this.perPage ? true : false
+        })
+        .catch(() => {
+          this.isLoading = false
+          this.$buefy.snackbar.open({
+            duration: 2000,
+            message: "An error occured. Please try again",
+            position: "is-top",
+            type: "is-warning",
+          })
+        })
     },
   },
   filters: {

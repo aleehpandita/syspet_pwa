@@ -3,7 +3,7 @@ import store from "@/store/index"
 
 const HTTP = () => {
   return axios.create({
-    baseURL: "http://0.0.0.0:8000/v1/users/",
+    baseURL: "http://localhost:8080/v1/users/",
     headers: {
       Authorization: `Bearer ${store.get("account/token")}`,
     },
@@ -11,39 +11,27 @@ const HTTP = () => {
 }
 
 function updateStoreData(accInfo) {
-  if (accInfo.jwt) {
+  if (accInfo.token) {
     store.set("account/isAuthenticated", true)
-    store.set("account/token", accInfo.jwt)
+    store.set("account/token", accInfo.token)
   }
   if (accInfo.id) {
     store.set("account/id", accInfo.id)
   }
-  if (accInfo.firstName) {
-    store.set("account/firstName", accInfo.firstName)
+  if (accInfo.name) {
+    store.set("account/name", accInfo.name)
   }
-  if (accInfo.lastName) {
-    store.set("account/lastName", accInfo.lastName)
+  if (accInfo.last_name) {
+    store.set("account/last_name", accInfo.last_name)
   }
-  if (accInfo.emailzƒ) {
-    store.set("account/emailAddress", accInfo.emailAddress)
+  if (accInfo.email) {
+    store.set("account/email", accInfo.email)
   }
-  if (accInfo.createdTime) {
-    store.set("account/createdTime", accInfo.createdTime)
+  if (accInfo.created_at) {
+    store.set("account/created_at", accInfo.created_at)
   }
-  if (accInfo.modifiedTime) {
-    store.set("account/modifiedTime", accInfo.modifiedTime)
-  }
-  if (accInfo.UUID) {
-    store.set("account/UUID", accInfo.UUID)
-  }
-  if (accInfo.phoneNumber) {
-    store.set("account/phoneNumber", accInfo.phoneNumber)
-  }
-  if (accInfo.isVerified) {
-    store.set("account/isVerified", accInfo.isVerified)
-  }
-  if (accInfo.userRole) {
-    store.set("account/userRole", accInfo.userRole)
+  if (accInfo.updated_at) {
+    store.set("account/updated_at", accInfo.updated_at)
   }
 }
 
@@ -51,33 +39,35 @@ const accFunctions = {
   login: function (payload) {
     return HTTP()
       .post("/login", {
-        emailAddress: payload.emailAddress,
+        email: payload.email,
         password: payload.password,
       })
       .then((res) => {
         store.set("account/isAuthenticated", true)
+        store.set("account/token", res.data.token)
         updateStoreData(res.data)
       })
   },
   signup: function (payload) {
     return HTTP()
       .post("/signup", {
-        emailAddress: payload.emailAddress,
+        email: payload.email,
         password: payload.password,
-        firstName: payload.firstName,
-        lastName: payload.lastName,
+        name: payload.name,
+        last_name: payload.last_name,
       })
       .then((res) => {
         store.set("account/isAuthenticated", true)
+        store.set("account/isAuthenticated", res.data.token)
         updateStoreData(res.data)
       })
   },
   getAccount: function (id = null) {
     if (id) {
-      return HTTP().get(`/accounts/${id}`)
+      return HTTP().get(`/${id}`)
     } else {
       return HTTP()
-        .get("/account")
+        .get("/")
         .then((res) => {
           updateStoreData(res.data)
         })
@@ -85,10 +75,14 @@ const accFunctions = {
   },
   updateAccount: function (payload, id = null) {
     if (id) {
-      return HTTP().put(`/accounts/${id}`, payload)
+      return HTTP()
+        .put(`/${id}`, payload)
+        .then((res) => {
+          updateStoreData(res.data)
+        })
     } else {
       return HTTP()
-        .put("/account", payload)
+        .put("/", payload)
         .then((res) => {
           updateStoreData(res.data)
         })
@@ -96,10 +90,14 @@ const accFunctions = {
   },
   deleteAccount: function (id = null) {
     if (id) {
-      return HTTP().delete(`/accounts/${id}`)
+      return HTTP()
+        .delete(`/${id}`)
+        .then(() => {
+          store.commit("account/reset")
+        })
     } else {
       return HTTP()
-        .delete("/account")
+        .delete("/")
         .then(() => {
           store.commit("account/reset")
         })
@@ -107,13 +105,13 @@ const accFunctions = {
   },
   getAccounts: function () {
     return HTTP()
-      .get("/accounts")
+      .get("/")
       .then((res) => {
         return res.data
       })
   },
-  initReset: function (emailAddress) {
-    return HTTP().post(`/initiate-reset/${emailAddress}`)
+  initReset: function (email) {
+    return HTTP().post(`/initiate-reset/${email}`)
   },
   confirmReset: function (token) {
     return HTTP()
@@ -140,28 +138,18 @@ const accFunctions = {
       errors: [],
     }
 
-    if (payload.firstName) {
-      cleanedData.firstName = payload.firstName
+    if (payload.name) {
+      cleanedData.name = payload.name
     }
-    if (payload.lastName) {
-      cleanedData.lastName = payload.lastName
+    if (payload.last_name) {
+      cleanedData.last_name = payload.last_name
     }
-    if (payload.emailAddress) {
-      cleanedData.emailAddress = payload.emailAddress
+    if (payload.email) {
+      cleanedData.email = payload.email
     }
-
-    if (payload.isVerified) {
-      cleanedData.isVerified = payload.isVerified
+    if (payload.token) {
+      cleanedData.token = payload.token
     }
-
-    if (payload.phoneNumber) {
-      cleanedData.phoneNumber = payload.phoneNumber
-    }
-
-    if (payload.userRole) {
-      cleanedData.userRole = payload.userRole
-    }
-
     if (payload.password) {
       if (payload.password.length < 6) {
         payload.errors.push("Password does not meet length requirements")

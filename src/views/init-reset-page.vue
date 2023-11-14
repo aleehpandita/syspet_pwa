@@ -13,7 +13,7 @@
         <br >
         <b-field label="Email Address">
           <FormulateInput
-            v-model="emailAddress"
+            v-model="email"
             type="email"
             name="email"
             validation="required|email"
@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       hasToken: false,
-      emailAddress: null,
+      email: null,
       errors: [],
     }
   },
@@ -71,7 +71,7 @@ export default {
   methods: {
     initReset: function () {
       let cleanData = this.$accountAPI.cleanData({
-        emailAddress: this.emailAddress,
+        email: this.email,
       })
 
       if (!cleanData.errors.length > 1) {
@@ -79,7 +79,7 @@ export default {
         return
       }
 
-      this.$accountAPI.initReset(this.emailAddress)
+      this.$accountAPI.initReset(this.email)
       this.$buefy.snackbar.open({
         message: "Email Address Submitted",
         type: "is-info",

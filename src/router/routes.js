@@ -84,7 +84,7 @@ const routes = [
     name: "addPet",
     component: () => lazyLoadView(import("@/views/add-pet")),
     meta: {
-      //requiresAuth: true,
+      requiresAuth: true,
     },
   },
   {
@@ -92,7 +92,7 @@ const routes = [
     name: "pets",
     component: () => lazyLoadView(import("@/views/pets-page")),
     meta: {
-      //requiresAuth: true,
+      requiresAuth: true,
     },
   },
 ]

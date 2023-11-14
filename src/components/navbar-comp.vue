@@ -25,15 +25,27 @@
       class="navbar-menu"
     >
       <div class="navbar-start">
-        <router-link v-if="isAdmin" to="/accounts" class="navbar-item">
+        <!-- <router-link v-if="isAdmin" to="/accounts" class="navbar-item">
           Accounts
+        </router-link> -->
+      </div>
+      <div class="navbar-start">
+        <router-link
+          to="/add-pet"
+          class="navbar-item"
+          @click.native="dismissNavbar"
+        >
+          Add Pet</router-link
+        >
+      </div>
+      <div class="navbar-start">
+        <router-link
+          to="/pets"
+          class="navbar-item"
+          @click.native="dismissNavbar"
+        >
+          Pets
         </router-link>
-      </div>
-      <div class="navbar-start">
-        <router-link to="/add-pet" class="navbar-item">Add Pet</router-link>
-      </div>
-      <div class="navbar-start">
-        <router-link to="/pets" class="navbar-item">Pets</router-link>
       </div>
       <div class="navbar-end">
         <!-- <span v-if="!isLoggedIn" class="navbar-item">
@@ -46,7 +58,11 @@
         <div v-if="isLoggedIn" class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link is-active"> Account </a>
           <div class="navbar-dropdown">
-            <router-link to="/account" class="navbar-item">
+            <router-link
+              to="/account"
+              class="navbar-item"
+              @click.native="dismissNavbar"
+            >
               Overview
             </router-link>
             <hr class="navbar-divider" >
@@ -66,6 +82,7 @@
 
 <script>
 import { get } from "vuex-pathify"
+import store from "@/store/index"
 
 export default {
   name: "Navbar",
@@ -84,12 +101,11 @@ export default {
   computed: {
     showNavbar: get("ui/showNavbar"),
     isLoggedIn: get("account/isAuthenticated"),
-    userRole: get("account/userRole"),
-    isAdmin: function () {
-      return this.userRole === "ADMIN"
-    },
   },
   methods: {
+    dismissNavbar() {
+      this.showMobileNav = false
+    },
     closeModal() {
       this.modalComp = null
     },
@@ -100,6 +116,7 @@ export default {
       this.modalComp = () => import("@/components/login-form")
     },
     logout() {
+      this.showMobileNav = false
       this.$accountAPI.logout()
       this.$buefy.toast.open({
         duration: 1000,

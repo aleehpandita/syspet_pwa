@@ -39,10 +39,10 @@ export default {
   computed: {
     showNavbar: get("ui/showNavbar"),
     isLoggedIn: get("account/isAuthenticated"),
-    userRole: get("account/userRole"),
-    isAdmin: function () {
-      return this.userRole === "ADMIN"
-    },
+    // userRole: get("account/userRole"),
+    // isAdmin: function () {
+    //   return this.userRole === "ADMIN"
+    // },
   },
   methods: {
     closeModal() {

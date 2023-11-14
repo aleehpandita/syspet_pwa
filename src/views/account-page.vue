@@ -4,41 +4,31 @@
     <form id="updateAccForm" @submit.prevent="updateAcc()">
       <b-field label="First Name">
         <FormulateInput
-          v-model="firstName"
+          v-model="name"
           type="text"
-          name="firstName"
+          name="name"
           placeholder="Joe"
         />
       </b-field>
 
       <b-field label="Last Name">
         <FormulateInput
-          v-model="lastName"
+          v-model="last_name"
           type="text"
-          name="lastName"
+          name="last_name"
           placeholder="Bandito"
         />
       </b-field>
 
       <b-field label="Email">
         <FormulateInput
-          v-model="emailAddress"
+          v-model="email"
           type="email"
           name="email"
           validation="email"
           placeholder="first_last@example.com"
         />
       </b-field>
-
-      <b-field label="Phone">
-        <FormulateInput
-          v-model="phoneNumber"
-          type="tel"
-          name="phone"
-          validation="email"
-        />
-      </b-field>
-
       <b-field label="Change Password">
         <FormulateInput
           v-model="password1"
@@ -86,10 +76,10 @@ export default {
   mixins: [],
   data() {
     return {
-      firstName: null,
-      lastName: null,
-      emailAddress: null,
-      phoneNumber: null,
+      id: null,
+      name: null,
+      last_name: null,
+      email: null,
       password1: null,
       password2: null,
       errors: [],
@@ -101,8 +91,9 @@ export default {
   },
   beforeMount() {},
   mounted() {
+    this.id = this.$store.get("account/id")
     this.$accountAPI
-      .getAccount()
+      .getAccount(this.id)
       .then(() => {
         this.setLocalData()
       })
@@ -117,10 +108,10 @@ export default {
   },
   methods: {
     setLocalData: function () {
-      this.firstName = this.$store.get("account/firstName")
-      this.lastName = this.$store.get("account/lastName")
-      this.emailAddress = this.$store.get("account/emailAddress")
-      this.phoneNumber = this.$store.get("account/phoneNumber")
+      this.name = this.$store.get("account/name")
+      this.last_name = this.$store.get("account/last_name")
+      this.email = this.$store.get("account/email")
+      this.id = this.$store.get("account/id")
     },
     updateAcc: function () {
       if (this.password1 && this.password1 !== this.password2) {
@@ -146,7 +137,7 @@ export default {
         return
       }
       this.$accountAPI
-        .updateAccount(cleanData)
+        .updateAccount(cleanData, this.id)
         .then(() => {
           this.setLocalData()
           this.$buefy.toast.open({
@@ -168,21 +159,21 @@ export default {
     changedFields: function () {
       let fields = {}
 
-      if (this.$store.get("account/firstName") !== this.firstName) {
-        fields.firstName = this.firstName
+      if (this.$store.get("account/name") !== this.name) {
+        fields.name = this.name
       }
 
-      if (this.$store.get("account/lastName") !== this.lastName) {
-        fields.lastName = this.lastName
+      if (this.$store.get("account/last_name") !== this.last_name) {
+        fields.last_name = this.last_name
       }
 
-      if (this.$store.get("account/emailAddress") !== this.emailAddress) {
-        fields.emailAddress = this.emailAddress
+      if (this.$store.get("account/email") !== this.email) {
+        fields.email = this.email
       }
 
-      if (this.$store.get("account/phoneNumber") !== this.phoneNumber) {
-        fields.phoneNumber = this.phoneNumber
-      }
+      // if (this.$store.get("account/phoneNumber") !== this.phoneNumber) {
+      //   fields.phoneNumber = this.phoneNumber
+      // }
 
       if (this.password1 && this.password1 === this.password2) {
         fields.password = this.password1
@@ -199,17 +190,16 @@ export default {
         type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-          this.$accountAPI.deleteAccount()
+          this.$accountAPI.deleteAccount(this.id)
           this.logout()
           this.$buefy.toast.open("Account deleted.")
         },
       })
     },
     clearLocal: function () {
-      this.firstName = null
-      this.lastName = null
-      this.emailAddress = null
-      this.phoneNumber = null
+      this.name = null
+      this.last_name = null
+      this.email = null
       this.password1 = null
       this.password2 = null
       this.errors = []

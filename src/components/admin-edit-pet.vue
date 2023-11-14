@@ -2,17 +2,7 @@
   <div>
     <div v-if="isAdmin">
       <form id="editAccForm" @submit.prevent="saveAccountChanges()">
-        <h1 class="title has-text-centered">Editing user: id {{ id }}</h1>
-
-        <p>
-          <strong>Created:</strong>
-          {{ created_at | fullDate }}
-        </p>
-        <p>
-          <strong>Modified:</strong>
-          {{ updated_at | fullDate }}
-        </p>
-
+        <h1 class="title has-text-centered">Editing {{ name }}</h1>
         <b-field label="First Name">
           <FormulateInput
             v-model="name"
@@ -24,36 +14,39 @@
 
         <b-field label="Last Name">
           <FormulateInput
-            v-model="last_name"
+            v-model="age"
             type="text"
-            name="last_name"
+            name="age"
             placeholder="Bandito"
           />
         </b-field>
 
-        <b-field label="Email">
+        <b-field label="Breed">
           <FormulateInput
-            v-model="email"
-            type="email"
-            name="email"
-            validation="email"
-            placeholder="first_last@example.com"
+            v-model="breed"
+            type="text"
+            name="breed"
+            placeholder="Pomerania"
           />
         </b-field>
-        <!-- <b-field label="Verified">
-          <div class="block">
-            <b-radio v-model="isVerified" native-value="true">True</b-radio>
-            <b-radio v-model="isVerified" native-value="false">False</b-radio>
-          </div>
-        </b-field> -->
+
+        <b-field label="Birth Date">
+          <FormulateInput v-model="birth_date" type="date" name="birth_date" />
+        </b-field>
         <div id="controlButtons">
-          <button class="button is-primary">Save Changes</button>
-          <!-- <button class="button is-danger is-outlined" @click.prevent="closeModal()">Discard Changes</button> -->
+          <button class="button is-primary is-fullwidth">Save Changes</button
+          ><br >
+          <button
+            class="button is-danger is-outlined"
+            @click.prevent="closeModal()"
+          >
+            Discard Changes
+          </button>
           <button
             class="button is-danger is-pulled-right"
-            @click.prevent="deleteAccount()"
+            @click.prevent="deletePet()"
           >
-            Delete Account
+            Delete Pet
           </button>
         </div>
       </form>
@@ -68,7 +61,7 @@
 import { get } from "vuex-pathify"
 
 export default {
-  name: "AdminEditUser",
+  name: "AdminEditPet",
   components: {},
   props: {
     payload: {
@@ -79,37 +72,29 @@ export default {
   mixins: [],
   data() {
     return {
+      isAdmin: true,
       id: null,
       name: null,
-      last_name: null,
-      email: null,
-      phoneNumber: null,
-      // isVerified: false,
-      // UUID: null,
-      // userRole: null,
-      created_at: null,
-      updated_at: null,
+      age: null,
+      breed: null,
+      birth_date: null,
     }
   },
   beforeCreate() {},
   created() {
     this.id = this.payload.id
     this.name = this.payload.name
-    this.last_name = this.payload.last_name
-    this.email = this.payload.email
-    // this.phoneNumber = this.payload.phoneNumber
-    // this.isVerified = this.payload.isVerified
-    // this.userRole = this.payload.userRole
-    this.created_at = this.payload.created_at
-    this.updated_at = this.payload.updated_at
+    this.age = this.payload.age
+    this.breed = this.payload.breed
+    this.birth_date = this.payload.birth_date
   },
   beforeMount() {},
   mounted() {},
   computed: {
-    loggedInUserRole: get("account/userRole"),
-    isAdmin: function () {
-      return this.loggedInUserRole === "ADMIN"
-    },
+    //loggedInUserRole: get("pet/userRole"),
+    // isAdmin: function () {
+    //   return this.loggedInUserRole === "ADMIN"
+    // },
   },
   methods: {
     saveAccountChanges() {
@@ -125,9 +110,9 @@ export default {
         return
       }
 
-      let cleanData = this.$accountAPI.cleanData(changedData)
-      this.$accountAPI
-        .updateAccount(cleanData, this.id)
+      let cleanData = this.$petAPI.cleanData(changedData)
+      this.$petAPI
+        .updatePet(cleanData, this.id)
         .then(() => {
           this.$buefy.toast.open({
             duration: 2000,
@@ -148,52 +133,45 @@ export default {
     },
     changedFields: function () {
       let fields = {}
+      fields.id = this.id
 
       if (this.payload.name !== this.name) {
         fields.name = this.name
       }
 
-      if (this.payload.last_name !== this.last_name) {
-        fields.last_name = this.last_name
+      if (this.payload.age !== this.age) {
+        fields.age = this.age
       }
 
-      if (this.payload.email !== this.email) {
-        fields.email = this.email
+      if (this.payload.breed !== this.breed) {
+        fields.breed = this.breed
       }
 
-      if (this.payload.phoneNumber !== this.phoneNumber) {
-        fields.phoneNumber = this.phoneNumber
-      }
-
-      if (this.payload.isVerified !== this.isVerified) {
-        fields.isVerified = this.isVerified
-      }
-
-      if (this.payload.userRole !== this.userRole) {
-        fields.userRole = this.userRole
+      if (this.payload.birth_date !== this.birth_date) {
+        fields.birth_date = this.birth_date
       }
 
       return fields
     },
-    deleteAccount: function () {
+    deletePet: function () {
       this.$buefy.dialog.confirm({
-        title: "Deleting account",
+        title: "Deleting pet",
         message:
-          "Are you sure you want to <strong>delete</strong> this account? This cannot be undone.",
-        confirmText: "Delete Account",
+          "Are you sure you want to <strong>delete</strong> this pet? This cannot be undone.",
+        confirmText: "Delete pet",
         type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-          this.$accountAPI
-            .deleteAccount(this.id)
+          this.$petAPI
+            .deletePet(this.id)
             .then(() => {
-              if (this.id === this.$store.get("account/id")) {
-                this.$accountAPI.logout()
+              if (this.id === this.$store.get("pet/id")) {
+                this.$petAPI.logout()
                 this.$router.push("/")
               }
               this.$buefy.toast.open({
                 duration: 2000,
-                message: "Account deleted",
+                message: "Pet deleted",
                 position: "is-top",
                 type: "is-info",
               })
@@ -235,16 +213,16 @@ export default {
 
 <style lang="scss" scoped>
 #editAccForm {
-  width: 50vw;
-  line-height: 2;
+  width: 65vw;
+  line-height: 1;
 
-  button {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
+  // button {
+  //   margin-left: 5px;
+  //   margin-right: 5px;
+  // }
 }
 
 #controlButtons {
-  margin-top: 40px;
+  margin-top: 5px;
 }
 </style>

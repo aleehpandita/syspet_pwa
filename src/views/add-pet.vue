@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1 class="title">Add Pet</h1>
-    <form id="updateAccForm" @submit.prevent="updateAcc()">
-      <b-field label="First Name">
+    <form id="updateAccForm" @submit.prevent="updatePet()">
+      <b-field label="Pet's Name">
         <FormulateInput
           v-model="name"
           type="text"
@@ -43,7 +43,7 @@
 
         <!-- <button
           class="button is-danger is-outlined"
-          @click.prevent="deleteAcc()"
+          @click.prevent="deletePet()"
         >
           Delete Account
         </button> -->
@@ -53,42 +53,12 @@
 </template>
 
 <script>
-/*
-        age:
-          type: integer
-        birth_date:
-          type: string
-        breed:
-          type: string
-        id:
-          type: integer
-        name:
-          type: string
-        owner_id:
-          type: integer
-        owner_name:
-          type: string
-*/
 export default {
   name: "AddPet",
   components: {},
   mixins: [],
   data() {
     return {
-      options: [
-        {
-          value: "1",
-          label: "Mexico",
-        },
-        {
-          value: "2",
-          label: "Thailand",
-        },
-        {
-          value: "3",
-          label: "Burundi",
-        },
-      ],
       name: null,
       age: null,
       birth_date: null,
@@ -99,136 +69,50 @@ export default {
     }
   },
   beforeCreate() {},
-  created() {
-    this.setLocalData()
-  },
+  created() {},
   beforeMount() {},
-  mounted() {
-    // this.$accountAPI
-    //   .getAccount()
-    //   .then(() => {
-    //     this.setLocalData()
-    //   })
-    //   .catch(() => {
-    //     console.log("failed to retrieve latest account info")
-    //   })
-  },
-  computed: {
-    // passesMatch: function () {
-    //   return this.password1 === this.password2
-    // },
-  },
+  mounted() {},
+  computed: {},
   methods: {
-    setLocalData: function () {
-      // this.name = this.$store.get("pet/name")
-      // this.age = this.$store.get("pet/age")
-      // this.birth_date = this.$store.get("pet/birth_date")
-      // this.breed = this.$store.get("pet/breed")
-      // this.owner_id = this.$store.get("pet/owner_id")
-      // this.owner_name = this.$store.get("pet/owner_name")
-    },
-    updateAcc: function () {
-      if (this.password1 && this.password1 !== this.password2) {
-        this.errors = ["passwords must match."]
-        return
-      }
-
-      let changedData = this.changedFields()
-      if (Object.values(changedData).length < 1) {
-        this.$buefy.toast.open({
-          duration: 2000,
-          message: "No changes to save",
-          position: "is-top",
-          type: "is-info",
-        })
-        return
-      }
-
-      let cleanData = this.$accountAPI.cleanData(changedData)
+    updatePet() {
+      const cleanData = this.$petAPI.cleanData({
+        name: this.name,
+        age: parseInt(this.age),
+        birth_date: this.birth_date,
+        breed: this.breed,
+        owner_id: this.owner_id,
+        owner_name: this.owner_name,
+      })
 
       if (cleanData.errors.length >= 1) {
         this.errors = cleanData.errors
         return
       }
-      this.$accountAPI
-        .updateAccount(cleanData)
+
+      this.errors = []
+      this.$petAPI
+        .savePet(cleanData)
         .then(() => {
-          this.setLocalData()
           this.$buefy.toast.open({
             duration: 2000,
-            message: "Changes Saved",
+            message: "Pet Saved",
             position: "is-top",
             type: "is-success",
           })
+          if (this.$router.currentRoute.path === "/add-pet") {
+            this.$router.push("/pets")
+          }
         })
-        .catch(() => {
-          this.$buefy.toast.open({
-            duration: 2000,
-            message: "An error occured, changes not saved",
-            position: "is-top",
-            type: "is-danger",
-          })
+        .catch((error) => {
+          console.log(error)
+          this.errors = ["An error occured, pet not saved"]
         })
-    },
-    changedFields: function () {
-      let fields = {}
-
-      if (this.$store.get("account/firstName") !== this.firstName) {
-        fields.firstName = this.firstName
-      }
-
-      if (this.$store.get("account/lastName") !== this.lastName) {
-        fields.lastName = this.lastName
-      }
-
-      if (this.$store.get("account/emailAddress") !== this.emailAddress) {
-        fields.emailAddress = this.emailAddress
-      }
-
-      if (this.$store.get("account/phoneNumber") !== this.phoneNumber) {
-        fields.phoneNumber = this.phoneNumber
-      }
-
-      if (this.password1 && this.password1 === this.password2) {
-        fields.password = this.password1
-      }
-
-      return fields
-    },
-    deleteAcc: function () {
-      this.$buefy.dialog.confirm({
-        title: "Deleting account",
-        message:
-          "Are you sure you want to <strong>delete</strong> your account? This cannot be undone.",
-        confirmText: "Delete Account",
-        type: "is-danger",
-        hasIcon: true,
-        onConfirm: () => {
-          this.$accountAPI.deleteAccount()
-          this.logout()
-          this.$buefy.toast.open("Account deleted.")
-        },
-      })
-    },
-    clearLocal: function () {
-      this.firstName = null
-      this.lastName = null
-      this.emailAddress = null
-      this.phoneNumber = null
-      this.password1 = null
-      this.password2 = null
-      this.errors = []
-    },
-    logout: function () {
-      this.$accountAPI.logout()
-      this.clearLocal()
-      this.$router.push("/")
     },
   },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {
-    this.clearLocal()
+    this.errors = []
   },
 }
 </script>

@@ -4,7 +4,7 @@
     <form id="loginform" @submit.prevent="login">
       <b-field label="Email">
         <FormulateInput
-          v-model="emailAddress"
+          v-model="email"
           type="email"
           name="email"
           validation="required|email"
@@ -47,7 +47,7 @@ export default {
   mixins: [],
   data() {
     return {
-      emailAddress: null,
+      email: null,
       password: null,
       errors: [],
     }
@@ -60,7 +60,7 @@ export default {
   methods: {
     login() {
       const cleanData = this.$accountAPI.cleanData({
-        emailAddress: this.emailAddress,
+        email: this.email,
         password: this.password,
       })
 
