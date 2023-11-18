@@ -76,13 +76,6 @@ export default {
   created() {
     this.id = this.$route.params.id
   },
-  // created() {
-  //   this.id = this.payload.id
-  //   this.name = this.payload.name
-  //   this.age = this.payload.age
-  //   this.breed = this.payload.breed
-  //   this.birth_date = this.payload.birth_date
-  // },
   beforeMount() {},
   mounted() {},
   computed: {},
@@ -129,22 +122,24 @@ export default {
       let fields = {}
       fields.id = this.id
 
-      if (this.payload.name !== this.name) {
-        fields.name = this.name
+      if (this.payload.address !== this.address) {
+        fields.address = this.address
       }
 
-      if (this.payload.age !== this.age) {
-        fields.age = this.age
+      if (this.payload.vet_name !== this.vet_name) {
+        fields.vet_name = this.vet_name
       }
 
-      if (this.payload.breed !== this.breed) {
-        fields.breed = this.breed
+      if (this.payload.reason !== this.reason) {
+        fields.reason = this.reason
       }
 
-      if (this.payload.birth_date !== this.birth_date) {
-        fields.birth_date = this.birth_date
+      if (this.payload.comments !== this.comments) {
+        fields.comments = this.comments
       }
-
+      if (this.payload.date !== this.date) {
+        fields.date = this.date
+      }
       return fields
     },
     deletePet: function () {
