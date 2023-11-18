@@ -4,8 +4,8 @@
 
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/" exact>
-        <!-- <img src="/static/yourLogo.png" alt="Your Logo" width="112" height="28"> -->
-        <h1 id="logo">SysPet</h1>
+        <img src="/img/syspet.png" alt="Your Logo" height="28" >
+        <h1 id="logo" class="logotop">SysPET</h1>
       </router-link>
 
       <div
@@ -165,5 +165,8 @@ nav {
 
 .accNav {
   margin-left: 5px;
+}
+.logotop {
+  margin-left: 3px;
 }
 </style>

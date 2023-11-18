@@ -1,9 +1,9 @@
 # ---- Base Node ----
-FROM node:15.14.0-alpine AS BASE
+FROM node:15.14.0-alpine AS base
 WORKDIR /app
 
 # ---- Dependencies ----
-FROM BASE AS build
+FROM base AS build
 
 COPY package*.json ./
 COPY yarn.lock ./
@@ -13,7 +13,7 @@ COPY ./ /app
 RUN yarn run build
 
 # --- Release ----
-FROM BASE AS release  
+FROM base AS release  
 
 COPY --from=build /app/server ./
 COPY --from=build /app/dist ./

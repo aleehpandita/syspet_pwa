@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1 class="title">Add Pet</h1>
+    <div class="has-text-centered top">
+      <img src="/img/pets.png" >
+      <h1 class="title">Add Pet</h1>
+    </div>
     <form id="updateAccForm" @submit.prevent="updatePet()">
       <b-field label="Pet's Name">
         <FormulateInput
@@ -39,7 +42,7 @@
       </b-field>
 
       <p class="control">
-        <button class="button is-primary">Save Changes</button>
+        <button class="button is-primary is-fullwidth">Save Changes</button>
 
         <!-- <button
           class="button is-danger is-outlined"
@@ -119,8 +122,8 @@ export default {
 
 <style lang="scss" scoped>
 .title {
-  margin: 25px;
   margin-bottom: 1vh;
+  color: $blue;
 }
 
 #passMatchErr {
@@ -133,7 +136,10 @@ export default {
 }
 
 #updateAccForm {
-  margin: 25px;
+  margin: 10px 25px;
   max-width: 350px;
+}
+.top {
+  margin-top: 10px;
 }
 </style>

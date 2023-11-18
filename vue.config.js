@@ -50,7 +50,7 @@ module.exports = {
     },
   },
   pwa: {
-    name: "Peridot",
+    name: "SysPet",
     themeColor: "#4DBA87",
     msTileColor: "#000000",
     appleMobileWebAppStatusBarStyle: "black",

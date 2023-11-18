@@ -42,9 +42,117 @@ function updateStoreData(accInfo) {
   if (accInfo.owner_name) {
     store.set("pet/owner_name", accInfo.owner_name)
   }
+  if (accInfo.vaccines) {
+    store.set("pet/vaccines", accInfo.vaccines)
+  }
+  if (accInfo.dewormings) {
+    store.set("pet/dewormings", accInfo.dewormings)
+  }
+  if (accInfo.vetvisits) {
+    store.set("pet/vetvisits", accInfo.vetvisits)
+  }
+  if (accInfo.surgeries) {
+    store.set("pet/surgeries", accInfo.surgeries)
+  }
 }
 
 const petFunctions = {
+  saveVaccinesPet: function (payload) {
+    return HTTP()
+      .post("/" + payload.id + "/vaccines", {
+        type: payload.type,
+        address: payload.address,
+        vet_name: payload.vet_name,
+        date: payload.date,
+        next_date: payload.next_date,
+      })
+      .then((res) => {
+        updateStoreData(res.data)
+      })
+  },
+  saveDewormingsPet: function (payload) {
+    return HTTP()
+      .post("/" + payload.id + "/dewormings", {
+        address: payload.address,
+        vet_name: payload.vet_name,
+        date: payload.date,
+        next_date: payload.next_date,
+      })
+      .then((res) => {
+        updateStoreData(res.data)
+      })
+  },
+  saveVetVisitsPet: function (payload) {
+    return HTTP()
+      .post("/" + payload.id + "/vetVisits", {
+        id: payload.id,
+        address: payload.address,
+        vet_name: payload.vet_name,
+        reason: payload.reason,
+        comments: payload.comments,
+        date: payload.date,
+      })
+      .then((res) => {
+        updateStoreData(res.data)
+      })
+  },
+  saveSurgeriesPet: function (payload) {
+    return HTTP()
+      .post("/" + payload.id + "/surgeries", {
+        address: payload.address,
+        vet_name: payload.vet_name,
+        name: payload.name,
+        comments: payload.comments,
+        date: payload.date,
+      })
+      .then((res) => {
+        updateStoreData(res.data)
+      })
+  },
+  getVaccinesPet: function (id = null) {
+    if (id) {
+      return HTTP().get("/" + id + "/vaccines")
+    } else {
+      return HTTP()
+        .get("/")
+        .then((res) => {
+          updateStoreData(res.data)
+        })
+    }
+  },
+  getDewormingsPet: function (id = null) {
+    if (id) {
+      return HTTP().get("/" + id + "/dewormings")
+    } else {
+      return HTTP()
+        .get("/")
+        .then((res) => {
+          updateStoreData(res.data)
+        })
+    }
+  },
+  getVetVisitsPet: function (id = null) {
+    if (id) {
+      return HTTP().get(`/${id}/vetVisits`)
+    } else {
+      return HTTP()
+        .get("/")
+        .then((res) => {
+          updateStoreData(res.data)
+        })
+    }
+  },
+  getSurgeriesPet: function (id = null) {
+    if (id) {
+      return HTTP().get("/" + id + "/surgeries")
+    } else {
+      return HTTP()
+        .get("/")
+        .then((res) => {
+          updateStoreData(res.data)
+        })
+    }
+  },
   savePet: function (payload) {
     return HTTP()
       .post("", {
@@ -97,6 +205,28 @@ const petFunctions = {
       .then((res) => {
         return res.data
       })
+  },
+  getVaccines: function (id = null) {
+    if (id) {
+      return HTTP().get(`/${id}/vaccines`)
+    } else {
+      return HTTP()
+        .get("/")
+        .then((res) => {
+          updateStoreData(res.data)
+        })
+    }
+  },
+  getDewormings: function (id = null) {
+    if (id) {
+      return HTTP().get(`/${id}/dewormings`)
+    } else {
+      return HTTP()
+        .get("/")
+        .then((res) => {
+          updateStoreData(res.data)
+        })
+    }
   },
   // initReset: function (emailAddress) {
   //   return HTTP().post(`/initiate-reset/${emailAddress}`)

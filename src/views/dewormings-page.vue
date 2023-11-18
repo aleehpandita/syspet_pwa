@@ -9,10 +9,11 @@
     <div class="container">
       <span v-if="this.items.length > 0">
         <div class="has-text-centered top">
-          <img src="/img/pets.png" >
-          <h1 class="title">Your Pets</h1>
+          <img src="/img/dew.png" >
+          <h1 class="title">Dewormings</h1>
+          <button class="button is-primary is-fullwidth">Add Dewormings</button>
         </div>
-        Number of pets: {{ this.items.length }}
+        <p class="top">Number of pets: {{ this.items.length }}</p>
       </span>
       <span v-if="this.items.length === 0">
         <h1 class="title">No pets registered</h1>
@@ -39,7 +40,7 @@
 
 <script>
 export default {
-  name: "Pets",
+  name: "Dewormings",
   mixins: [],
   data() {
     return {
@@ -176,7 +177,7 @@ export default {
 }
 .title {
   margin-top: 2px;
-  margin-bottom: 1vh;
+  margin-bottom: 5px;
   color: $blue;
 }
 

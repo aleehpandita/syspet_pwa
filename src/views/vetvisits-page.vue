@@ -7,16 +7,20 @@
     />
 
     <div class="container">
-      <span v-if="this.items.length > 0">
-        <div class="has-text-centered top">
-          <img src="/img/pets.png" >
-          <h1 class="title">Your Pets</h1>
-        </div>
-        Number of pets: {{ this.items.length }}
-      </span>
-      <span v-if="this.items.length === 0">
-        <h1 class="title">No pets registered</h1>
-      </span>
+      <div class="has-text-centered top">
+        <img src="/img/vet.png" >
+        <h1 class="title">Vet Visits</h1>
+        <button class="button is-primary is-fullwidth" @click="openEditModal()">
+          Add Visit
+        </button>
+      </div>
+      <!-- <span v-if="this.items.length > 0">
+        Number of visits: {{ this.items.length }}
+      </span> -->
+      <br >
+      <!-- <span v-if="this.items.length === 0">
+        <h1 class="title has-text-centered ">No visits registered</h1>
+      </span> -->
       <!-- <b-table :data="items" :columns="columns" /> -->
       <!-- <p v-if="!isEmpty">Number of pets: {{ this.items }}</p> -->
       <template>
@@ -39,7 +43,7 @@
 
 <script>
 export default {
-  name: "Pets",
+  name: "Vetvisits",
   mixins: [],
   data() {
     return {
@@ -89,10 +93,13 @@ export default {
       perPage: 20,
       modalComp: null,
       selectedUser: {},
+      id: null,
     }
   },
   beforeCreate() {},
-  created() {},
+  created() {
+    this.id = this.$route.params.id
+  },
   beforeMount() {
     this.updateLocalData()
   },
@@ -103,22 +110,21 @@ export default {
       //   console.log(key, fetchedData[key])
       //   this.items
       // })
-      return this.items.map((item) => ({
-        ...item,
-        //avatar: `<img src="${item.avatar}" alt="Avatar" class="avatar-img"/>`,
-        edit: `<b-button class="button is-small is-info is-outlined custom-button" data-id="${item.id}"
-              @click.stop="openEditModal(${item})"
-            >
-              Edit
-            </b-button>`,
-      }))
+      // return this.items.map((item) => ({
+      //   ...item,
+      //   avatar: `<img src="${item.avatar}" alt="Avatar" class="avatar-img"/>`,
+      //   edit: `<b-button class="button is-small is-info is-outlined custom-button" data-id="${item.id}"
+      //         @click.stop="openEditModal(${item})"
+      //       >
+      //         Edit
+      //       </b-button>`,
+      // }))
+      return console.log("hola")
     },
   },
   methods: {
-    openEditModal(userData) {
-      console.log("item:" + userData.id)
-      this.selectedUser = userData
-      this.modalComp = () => import("@/components/admin-edit-pet")
+    openEditModal() {
+      this.modalComp = () => import("@/components/admin-add-visits")
     },
     closeModal(madeChanges) {
       this.selectedUser = {}
@@ -129,13 +135,13 @@ export default {
     },
     updateLocalData() {
       this.$petAPI
-        .getPets()
+        .getVetVisitsPet(this.id)
         .then((fetchedData) => {
           // Object.keys(fetchedData).forEach((key) => {
           //   console.log(key, fetchedData[key])
           // })
           this.items = fetchedData["pets"]
-          console.log(this.items)
+          //console.log(this.items)
           this.isLoading = false
           this.isEmpty = false
           this.isPaginated = this.items.length > this.perPage ? true : false
@@ -144,7 +150,7 @@ export default {
           this.isLoading = false
           this.$buefy.snackbar.open({
             duration: 2000,
-            message: "An error occured. Please try again",
+            message: "No visits registered",
             position: "is-top",
             type: "is-warning",
           })

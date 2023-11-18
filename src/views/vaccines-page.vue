@@ -1,21 +1,23 @@
 <template>
   <div class="top">
-    <modal
-      :component="modalComp"
-      :payload="selectedUser"
-      @exitModal="closeModal"
-    />
+    <modal :component="modalComp" :payload="id" @exitModal="closeModal" />
 
     <div class="container">
       <span v-if="this.items.length > 0">
         <div class="has-text-centered top">
-          <img src="/img/pets.png" >
-          <h1 class="title">Your Pets</h1>
+          <img src="/img/vaccines.png" >
+          <h1 class="title">Vaccines</h1>
+          <button
+            class="button is-primary is-fullwidth"
+            @click="openEditModal()"
+          >
+            Add Vaccines
+          </button>
         </div>
-        Number of pets: {{ this.items.length }}
+        Number of vaccines: {{ this.items.length }}
       </span>
       <span v-if="this.items.length === 0">
-        <h1 class="title">No pets registered</h1>
+        <h1 class="title">No vaccines registered</h1>
       </span>
       <!-- <b-table :data="items" :columns="columns" /> -->
       <!-- <p v-if="!isEmpty">Number of pets: {{ this.items }}</p> -->
@@ -39,7 +41,7 @@
 
 <script>
 export default {
-  name: "Pets",
+  name: "Vaccines",
   mixins: [],
   data() {
     return {
@@ -89,6 +91,7 @@ export default {
       perPage: 20,
       modalComp: null,
       selectedUser: {},
+      id: null,
     }
   },
   beforeCreate() {},
@@ -115,10 +118,8 @@ export default {
     },
   },
   methods: {
-    openEditModal(userData) {
-      console.log("item:" + userData.id)
-      this.selectedUser = userData
-      this.modalComp = () => import("@/components/admin-edit-pet")
+    openEditModal() {
+      this.modalComp = () => import("@/components/admin-add-vaccine")
     },
     closeModal(madeChanges) {
       this.selectedUser = {}

@@ -2,52 +2,45 @@
   <div>
     <div v-if="isAdmin">
       <form id="editAccForm" @submit.prevent="saveAccountChanges()">
-        <!-- <h2 class="title has-text-centered">{{ name }}</h2> -->
-        <b-field label="First Name">
+        <div class="has-text-centered"><img src="/img/vet.png" ></div>
+        <b-field label="Vet Name">
           <FormulateInput
-            v-model="name"
+            v-model="vet_name"
             type="text"
-            name="name"
-            placeholder="Joe"
+            name="vet_name"
+            placeholder="Vet Name"
           />
         </b-field>
 
-        <b-field label="Last Name">
+        <b-field label="Address">
           <FormulateInput
-            v-model="age"
+            v-model="address"
             type="text"
-            name="age"
-            placeholder="Bandito"
+            name="address"
+            placeholder="Address"
           />
         </b-field>
-
-        <b-field label="Breed">
+        <b-field label="Reason">
           <FormulateInput
-            v-model="breed"
+            v-model="reason"
             type="text"
-            name="breed"
-            placeholder="Pomerania"
+            name="reason"
+            placeholder="reason"
           />
         </b-field>
-
-        <b-field label="Birth Date">
-          <FormulateInput v-model="birth_date" type="date" name="birth_date" />
+        <b-field label="Comments">
+          <FormulateInput
+            v-model="comments"
+            type="text"
+            name="comments"
+            placeholder="Comments"
+          />
+        </b-field>
+        <b-field label="Date">
+          <FormulateInput v-model="date" type="date" name="date" />
         </b-field>
         <div id="controlButtons">
           <button class="button is-primary is-fullwidth">Save Changes</button>
-          <br >
-          <button
-            class="button is-success is-outlined"
-            @click.prevent="AddMedicalRecord()"
-          >
-            Medical Record
-          </button>
-          <button
-            class="button is-danger is-pulled-right"
-            @click.prevent="deletePet()"
-          >
-            Delete Pet
-          </button>
         </div>
       </form>
     </div>
@@ -58,10 +51,8 @@
 </template>
 
 <script>
-import { get } from "vuex-pathify"
-
 export default {
-  name: "AdminEditPet",
+  name: "AddVaccine",
   components: {},
   props: {
     payload: {
@@ -74,20 +65,24 @@ export default {
     return {
       isAdmin: true,
       id: null,
-      name: null,
-      age: null,
-      breed: null,
-      birth_date: null,
+      address: null,
+      vet_name: null,
+      reason: null,
+      comments: null,
+      date: null,
     }
   },
   beforeCreate() {},
   created() {
-    this.id = this.payload.id
-    this.name = this.payload.name
-    this.age = this.payload.age
-    this.breed = this.payload.breed
-    this.birth_date = this.payload.birth_date
+    this.id = this.$route.params.id
   },
+  // created() {
+  //   this.id = this.payload.id
+  //   this.name = this.payload.name
+  //   this.age = this.payload.age
+  //   this.breed = this.payload.breed
+  //   this.birth_date = this.payload.birth_date
+  // },
   beforeMount() {},
   mounted() {},
   computed: {},
@@ -111,7 +106,7 @@ export default {
 
       let cleanData = this.$petAPI.cleanData(changedData)
       this.$petAPI
-        .updatePet(cleanData, this.id)
+        .saveVetVisitsPet(cleanData)
         .then(() => {
           this.$buefy.toast.open({
             duration: 2000,

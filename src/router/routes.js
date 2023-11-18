@@ -95,6 +95,46 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/pets/:id",
+    name: "medical",
+    component: () => lazyLoadView(import("@/views/medical-page")),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/pets/:id/vaccines",
+    name: "vaccines",
+    component: () => lazyLoadView(import("@/views/vaccines-page")),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/pets/:id/dewormings",
+    name: "dewormings",
+    component: () => lazyLoadView(import("@/views/dewormings-page")),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/pets/:id/surgeries",
+    name: "surgeries",
+    component: () => lazyLoadView(import("@/views/surgeries-page")),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/pets/:id/vetvisits",
+    name: "Vetvisits",
+    component: () => lazyLoadView(import("@/views/vetvisits-page")),
+    meta: {
+      requiresAuth: true,
+    },
+  },
 ]
 
 // Lazy-loads view components, but with better UX. A loading view

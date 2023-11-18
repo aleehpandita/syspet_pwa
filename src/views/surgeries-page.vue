@@ -9,8 +9,14 @@
     <div class="container">
       <span v-if="this.items.length > 0">
         <div class="has-text-centered top">
-          <img src="/img/pets.png" >
-          <h1 class="title">Your Pets</h1>
+          <img src="/img/surgery.png" >
+          <h1 class="title">Surgeries</h1>
+          <button
+            class="button is-primary is-fullwidth"
+            @click="openEditModal()"
+          >
+            Add Surgeries
+          </button>
         </div>
         Number of pets: {{ this.items.length }}
       </span>
@@ -39,7 +45,7 @@
 
 <script>
 export default {
-  name: "Pets",
+  name: "Surgeries",
   mixins: [],
   data() {
     return {
