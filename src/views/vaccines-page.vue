@@ -1,19 +1,20 @@
 <template>
   <div class="top">
-    <modal :component="modalComp" :payload="id" @exitModal="closeModal" />
+    <modal
+      :component="modalComp"
+      :payload="selectedUser"
+      @exitModal="closeModal"
+    />
 
     <div class="container">
+      <div class="has-text-centered top">
+        <img src="/img/vaccines.png" >
+        <h1 class="title">Vaccines</h1>
+        <button class="button is-primary is-fullwidth" @click="openEditModal()">
+          Add Vaccines
+        </button>
+      </div>
       <span v-if="this.items.length > 0">
-        <div class="has-text-centered top">
-          <img src="/img/vaccines.png" >
-          <h1 class="title">Vaccines</h1>
-          <button
-            class="button is-primary is-fullwidth"
-            @click="openEditModal()"
-          >
-            Add Vaccines
-          </button>
-        </div>
         Number of vaccines: {{ this.items.length }}
       </span>
       <span v-if="this.items.length === 0">
@@ -56,25 +57,29 @@ export default {
         //   label: "avatar",
         // },
         {
-          field: "name",
-          label: "name",
+          field: "pet_name",
+          label: "Pets name",
         },
         {
-          field: "age",
-          label: "Age",
+          field: "type",
+          label: "Type",
         },
         {
-          field: "breed",
-          label: "Breed",
+          field: "vet_name",
+          label: "Vet name",
         },
         {
-          field: "birth_date",
-          label: "BirthDay",
+          field: "address",
+          label: "Address",
           centered: true,
         },
         {
-          field: "owner_name",
-          label: "Owner Name",
+          field: "date",
+          label: "Date",
+        },
+        {
+          field: "next_date",
+          label: "Next date",
         },
       ],
       checkedRows: [],
@@ -95,7 +100,9 @@ export default {
     }
   },
   beforeCreate() {},
-  created() {},
+  created() {
+    this.id = this.$route.params.id
+  },
   beforeMount() {
     this.updateLocalData()
   },
@@ -130,12 +137,12 @@ export default {
     },
     updateLocalData() {
       this.$petAPI
-        .getPets()
+        .getVaccinesPet(this.id)
         .then((fetchedData) => {
-          // Object.keys(fetchedData).forEach((key) => {
-          //   console.log(key, fetchedData[key])
-          // })
-          this.items = fetchedData["pets"]
+          Object.keys(fetchedData.data).forEach((key) => {
+            console.log(key, fetchedData.data[key])
+          })
+          this.items = fetchedData.data["vaccines"]
           console.log(this.items)
           this.isLoading = false
           this.isEmpty = false

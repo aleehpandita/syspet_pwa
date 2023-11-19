@@ -3,15 +3,6 @@
     <div v-if="isAdmin">
       <form id="editAccForm" @submit.prevent="saveAccountChanges()">
         <div class="has-text-centered"><img src="/img/surgery.png" ></div>
-        <b-field label="Type">
-          <FormulateInput
-            v-model="type"
-            type="text"
-            name="type"
-            placeholder="Type"
-          />
-        </b-field>
-
         <b-field label="Vet Name">
           <FormulateInput
             v-model="vet_name"
@@ -29,12 +20,24 @@
             placeholder="Address"
           />
         </b-field>
-
+        <b-field label="Name">
+          <FormulateInput
+            v-model="name"
+            type="text"
+            name="name"
+            placeholder="Name"
+          />
+        </b-field>
+        <b-field label="Comments">
+          <FormulateInput
+            v-model="comments"
+            type="text"
+            name="comments"
+            placeholder="Comments"
+          />
+        </b-field>
         <b-field label="Date">
           <FormulateInput v-model="date" type="date" name="date" />
-        </b-field>
-        <b-field label="Next Date">
-          <FormulateInput v-model="next_date" type="date" name="next_date" />
         </b-field>
         <div id="controlButtons">
           <button class="button is-primary is-fullwidth">Save Changes</button>
@@ -62,11 +65,11 @@ export default {
     return {
       isAdmin: true,
       id: null,
-      type: null,
+      name: null,
       address: null,
       vet_name: null,
       date: null,
-      next_date: null,
+      comments: null,
     }
   },
   beforeCreate() {},
@@ -103,7 +106,7 @@ export default {
 
       let cleanData = this.$petAPI.cleanData(changedData)
       this.$petAPI
-        .saveVaccinesPet(cleanData, this.id)
+        .saveSurgeriesPet(cleanData)
         .then(() => {
           this.$buefy.toast.open({
             duration: 2000,
@@ -126,22 +129,22 @@ export default {
       let fields = {}
       fields.id = this.id
 
-      if (this.payload.name !== this.name) {
-        fields.name = this.name
-      }
+      //if (this.payload.name !== this.name) {
+      fields.name = this.name
+      //}
 
-      if (this.payload.age !== this.age) {
-        fields.age = this.age
-      }
+      //if (this.payload.age !== this.age) {
+      fields.vet_name = this.vet_name
+      //}
 
-      if (this.payload.breed !== this.breed) {
-        fields.breed = this.breed
-      }
+      //if (this.payload.breed !== this.breed) {
+      fields.address = this.address
+      //}
 
-      if (this.payload.birth_date !== this.birth_date) {
-        fields.birth_date = this.birth_date
-      }
-
+      //if (this.payload.birth_date !== this.birth_date) {
+      fields.comments = this.comments
+      //}
+      fields.date = this.date
       return fields
     },
     deletePet: function () {

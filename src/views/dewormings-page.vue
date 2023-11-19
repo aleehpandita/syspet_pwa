@@ -7,16 +7,18 @@
     />
 
     <div class="container">
+      <div class="has-text-centered top">
+        <img src="/img/dew.png" >
+        <h1 class="title">Dewormings</h1>
+        <button class="button is-primary is-fullwidth" @click="openEditModal()">
+          Add Dewormings
+        </button>
+      </div>
       <span v-if="this.items.length > 0">
-        <div class="has-text-centered top">
-          <img src="/img/dew.png" >
-          <h1 class="title">Dewormings</h1>
-          <button class="button is-primary is-fullwidth">Add Dewormings</button>
-        </div>
-        <p class="top">Number of pets: {{ this.items.length }}</p>
+        <p class="top">Number of dewormings: {{ this.items.length }}</p>
       </span>
       <span v-if="this.items.length === 0">
-        <h1 class="title">No pets registered</h1>
+        <h1 class="title">No dewormings registered</h1>
       </span>
       <!-- <b-table :data="items" :columns="columns" /> -->
       <!-- <p v-if="!isEmpty">Number of pets: {{ this.items }}</p> -->
@@ -30,7 +32,6 @@
             bordered
             narrowed
             hoverable
-            @click="openEditModal"
           />
         </div>
       </template>
@@ -55,25 +56,21 @@ export default {
         //   label: "avatar",
         // },
         {
-          field: "name",
-          label: "name",
+          field: "vet_name",
+          label: "vet name",
         },
         {
-          field: "age",
-          label: "Age",
+          field: "address",
+          label: "Address",
         },
         {
-          field: "breed",
-          label: "Breed",
+          field: "date",
+          label: "Date",
         },
         {
-          field: "birth_date",
-          label: "BirthDay",
+          field: "next_date",
+          label: "Next date",
           centered: true,
-        },
-        {
-          field: "owner_name",
-          label: "Owner Name",
         },
       ],
       checkedRows: [],
@@ -93,7 +90,9 @@ export default {
     }
   },
   beforeCreate() {},
-  created() {},
+  created() {
+    this.id = this.$route.params.id
+  },
   beforeMount() {
     this.updateLocalData()
   },
@@ -117,9 +116,9 @@ export default {
   },
   methods: {
     openEditModal(userData) {
-      console.log("item:" + userData.id)
+      //console.log("item:" + userData.id)
       this.selectedUser = userData
-      this.modalComp = () => import("@/components/admin-edit-pet")
+      this.modalComp = () => import("@/components/admin-add-dewormings")
     },
     closeModal(madeChanges) {
       this.selectedUser = {}
@@ -130,12 +129,12 @@ export default {
     },
     updateLocalData() {
       this.$petAPI
-        .getPets()
+        .getDewormingsPet(this.id)
         .then((fetchedData) => {
-          // Object.keys(fetchedData).forEach((key) => {
-          //   console.log(key, fetchedData[key])
-          // })
-          this.items = fetchedData["pets"]
+          Object.keys(fetchedData.data).forEach((key) => {
+            console.log(key, fetchedData.data[key])
+          })
+          this.items = fetchedData.data["dewormings"]
           console.log(this.items)
           this.isLoading = false
           this.isEmpty = false

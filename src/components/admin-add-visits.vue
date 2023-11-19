@@ -52,7 +52,7 @@
 
 <script>
 export default {
-  name: "AddVaccine",
+  name: "AddVisits",
   components: {},
   props: {
     payload: {

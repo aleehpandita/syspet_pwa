@@ -48,8 +48,8 @@ function updateStoreData(accInfo) {
   if (accInfo.dewormings) {
     store.set("pet/dewormings", accInfo.dewormings)
   }
-  if (accInfo.vetvisits) {
-    store.set("pet/vetvisits", accInfo.vetvisits)
+  if (accInfo.vet_visits) {
+    store.set("pet/vet_visits", accInfo.vet_visits)
   }
   if (accInfo.surgeries) {
     store.set("pet/surgeries", accInfo.surgeries)
@@ -58,6 +58,7 @@ function updateStoreData(accInfo) {
 
 const petFunctions = {
   saveVaccinesPet: function (payload) {
+    console.log(payload + "estouaqui")
     return HTTP()
       .post("/" + payload.id + "/vaccines", {
         type: payload.type,
@@ -83,6 +84,7 @@ const petFunctions = {
       })
   },
   saveVetVisitsPet: function (payload) {
+    //console.log(payload.id)
     return HTTP()
       .post("/" + payload.id + "/vetVisits", {
         id: payload.id,
@@ -110,6 +112,7 @@ const petFunctions = {
       })
   },
   getVaccinesPet: function (id = null) {
+    console.log(id + "id")
     if (id) {
       return HTTP().get("/" + id + "/vaccines")
     } else {
@@ -255,7 +258,27 @@ const petFunctions = {
     let cleanedData = {
       errors: [],
     }
-
+    if (payload.id) {
+      cleanedData.id = payload.id
+    }
+    if (payload.vet_name) {
+      cleanedData.vet_name = payload.vet_name
+    }
+    if (payload.address) {
+      cleanedData.address = payload.address
+    }
+    if (payload.reason) {
+      cleanedData.reason = payload.reason
+    }
+    if (payload.comments) {
+      cleanedData.comments = payload.comments
+    }
+    if (payload.date) {
+      cleanedData.date = payload.date
+    }
+    if (payload.next_date) {
+      cleanedData.next_date = payload.next_date
+    }
     if (payload.name) {
       cleanedData.name = payload.name
     }
@@ -265,7 +288,9 @@ const petFunctions = {
     if (payload.breed) {
       cleanedData.breed = payload.breed
     }
-
+    if (payload.type) {
+      cleanedData.type = payload.type
+    }
     if (payload.birth_date) {
       cleanedData.birth_date = payload.birth_date
     }

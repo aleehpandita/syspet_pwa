@@ -14,14 +14,14 @@
           Add Visit
         </button>
       </div>
-      <!-- <span v-if="this.items.length > 0">
+      <span v-if="this.items.length > 0">
         Number of visits: {{ this.items.length }}
-      </span> -->
+      </span>
       <br >
-      <!-- <span v-if="this.items.length === 0">
-        <h1 class="title has-text-centered ">No visits registered</h1>
-      </span> -->
-      <!-- <b-table :data="items" :columns="columns" /> -->
+      <span v-if="this.items.length === 0">
+        <h1 class="title has-text-centered">No visits registered</h1>
+      </span>
+      <b-table :data="items" :columns="columns" />
       <!-- <p v-if="!isEmpty">Number of pets: {{ this.items }}</p> -->
       <template>
         <div>
@@ -49,34 +49,38 @@ export default {
     return {
       items: [],
       columns: [
-        {
-          field: "id",
-          label: "ID",
-        },
+        // {
+        //   field: "id",
+        //   label: "ID",
+        // },
         // {
         //   field: "avatar",
         //   label: "avatar",
         // },
         {
-          field: "name",
-          label: "name",
+          field: "vet_name",
+          label: "vet_name",
         },
         {
-          field: "age",
-          label: "Age",
+          field: "address",
+          label: "address",
         },
         {
-          field: "breed",
-          label: "Breed",
+          field: "reason",
+          label: "reason",
         },
         {
-          field: "birth_date",
-          label: "BirthDay",
+          field: "comments",
+          label: "comments",
+        },
+        {
+          field: "pet_name",
+          label: "Pet's name",
           centered: true,
         },
         {
-          field: "owner_name",
-          label: "Owner Name",
+          field: "date",
+          label: "Date",
         },
       ],
       checkedRows: [],
@@ -137,11 +141,11 @@ export default {
       this.$petAPI
         .getVetVisitsPet(this.id)
         .then((fetchedData) => {
-          // Object.keys(fetchedData).forEach((key) => {
-          //   console.log(key, fetchedData[key])
-          // })
-          this.items = fetchedData["pets"]
-          //console.log(this.items)
+          Object.keys(fetchedData.data).forEach((key) => {
+            console.log(key, fetchedData.data[key])
+          })
+          this.items = fetchedData.data["vet_visits"]
+          //console.log(this.items + "this items")
           this.isLoading = false
           this.isEmpty = false
           this.isPaginated = this.items.length > this.perPage ? true : false

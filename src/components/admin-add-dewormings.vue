@@ -2,16 +2,7 @@
   <div>
     <div v-if="isAdmin">
       <form id="editAccForm" @submit.prevent="saveAccountChanges()">
-        <div class="has-text-centered"><img src="/img/vaccines.png" ></div>
-        <b-field label="Type">
-          <FormulateInput
-            v-model="type"
-            type="text"
-            name="type"
-            placeholder="Type"
-          />
-        </b-field>
-
+        <div class="has-text-centered"><img src="/img/dew.png" ></div>
         <b-field label="Vet Name">
           <FormulateInput
             v-model="vet_name"
@@ -103,7 +94,7 @@ export default {
 
       let cleanData = this.$petAPI.cleanData(changedData)
       this.$petAPI
-        .saveVaccinesPet(cleanData)
+        .saveDewormingsPet(cleanData)
         .then(() => {
           this.$buefy.toast.open({
             duration: 2000,
